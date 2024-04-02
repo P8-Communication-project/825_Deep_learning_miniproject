@@ -8,13 +8,15 @@ import wandb
 import torch.nn as nn
 import numpy as np
 
-
 import matplotlib.pyplot as plt
 import seaborn as sn
 from sklearn.metrics import confusion_matrix
-Confmatrix = True
+
+# Flag for outputting confusion matrix:
+CONFMATRIX = True
 
 #device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+# GPU turned out to be quite slow in our case, so we recommend using CPU.
 device = "cpu"
 #wandb.init(project='your_project_name', config=Config(your_custom_config_dict))
 
@@ -31,7 +33,11 @@ class CustomDataset(Dataset):
         #print(type(self.data[idx]), type(self.labels[idx]))
         return torch.tensor(self.data[idx], dtype=torch.float).to(device), torch.tensor([self.labels[idx]], dtype=torch.float).to(device)
 
+# -------------------------------------------------------------------
+# --- uncomment the code below to use the different layer-models: ---
+# -------------------------------------------------------------------
 
+# ------ 6 layers: ------
 # class BinaryClassifier(nn.Module):
 #     def __init__(self, input_size, dropout_p=0):
 #         super(BinaryClassifier, self).__init__()
@@ -52,7 +58,9 @@ class CustomDataset(Dataset):
 #         x = self.dropout(torch.relu(self.fc5(x)))
 #         x = self.sigmoid(self.fc6(x))
 #         return x
+# -----------------------
 
+# ------ 5 layers: ------
 # class BinaryClassifier(nn.Module):
 #     def __init__(self, input_size, dropout_p=0):
 #         super(BinaryClassifier, self).__init__()
@@ -71,7 +79,9 @@ class CustomDataset(Dataset):
 #         x = self.dropout(torch.relu(self.fc4(x)))
 #         x = self.sigmoid(self.fc5(x))
 #         return x
-
+# -----------------------
+    
+# ------ 4 layers: ------
 class BinaryClassifier(nn.Module):
     def __init__(self, input_size, dropout_p=0):
         super(BinaryClassifier, self).__init__()
@@ -88,7 +98,7 @@ class BinaryClassifier(nn.Module):
         x = self.dropout(torch.relu(self.fc3(x)))
         x = self.sigmoid(self.fc4(x))
         return x
-
+# -----------------------
 
 
 # Load the dataset
@@ -105,7 +115,7 @@ x_pitch_up = aug_df['pitch_up'].apply(lambda z: list(map(float, z.strip("tensor(
 x_pitch_down = aug_df['pitch_down'].apply(lambda z: list(map(float, z.strip("tensor(").strip("[[").strip('\n').strip("]])").split(','))))
 
 
-#Encode healthy and covid status as 1 ad 0
+#Encode healthy and covid status as 1 and 0
 for status in orig_df["status"]:
     if status == 'healthy':
         orig_df['status'] = orig_df['status'].replace('healthy', 1)
@@ -124,13 +134,9 @@ x_combined = torch.tensor(pd.concat([x_orig, x_noisy, x_pitch_up, x_pitch_down],
 
 print(f"data tensor: {x_combined.shape}")
 
-# print(x)
-# print(y)
 
-# # Split the data into training, validation, and test sets
-# X_val, X_test, y_val, y_test = train_test_split(X_temp, y_temp, test_size=0.33, random_state=42)
-
-# Create data loaders
+# Create data loaders for training, test and validation:
+# doing the splits separately for the original and augmented data, using the same seed to be able to reference the same UUIDs later. 
 def build_dataset(batch_size):
     X_train1, X_temp1, y_train1, y_temp1 = train_test_split(x_orig, y[:len(x_orig)], test_size=0.3, random_state=42)
     X_val1, X_test1, y_val1, y_test1 = train_test_split(X_temp1, y_temp1, test_size=0.33, random_state=42)
@@ -181,7 +187,6 @@ def train(config=None):
     with wandb.init(config=config):
         # Initialize the model
         config = wandb.config
-
         #print(config)
 
         train_loader, val_loader, y_val_len, uuids_to_val = build_dataset(config.batch_size)
@@ -193,7 +198,7 @@ def train(config=None):
     
         criterion = nn.BCELoss()
 
-        # Example of logging metrics during training
+        # Logging metrics during training
         for epoch in range(config.epochs):
             # Training loop
             model.train()  # Set the model to training mode
@@ -235,7 +240,11 @@ def train(config=None):
                 
                 # Log metrics to wandb
                 wandb.log({'val_loss': val_loss, 'val_accuracy': accuracy, 'epoch': epoch, "user ": "Anders"})
-        if Confmatrix == True:
+                # wandb.log({'val_loss': val_loss, 'val_accuracy': accuracy, 'epoch': epoch, "user ": "David"})
+                # wandb.log({'val_loss': val_loss, 'val_accuracy': accuracy, 'epoch': epoch, "user ": "Mads"})
+                # wandb.log({'val_loss': val_loss, 'val_accuracy': accuracy, 'epoch': epoch, "user ": "Nicolai"})
+
+        if CONFMATRIX == True:
             print(predicted_list.shape)
             cf_matrix = confusion_matrix(labels_list, predicted_list)
             print(len(labels_list))
@@ -249,6 +258,7 @@ def train(config=None):
             ax.collections[0].set_clim(0,1)
             plt.title('Confusion matrix 4 layers')
             plt.savefig('119_4_layer+1.png')
+
         five_random_task = True
         if five_random_task == True:
             false_positives = []
