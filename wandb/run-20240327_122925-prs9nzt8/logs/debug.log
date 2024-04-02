@@ -1,0 +1,35 @@
+2024-03-27 12:29:25,744 INFO    Thread-159 (_run_job):14388 [wandb_setup.py:_flush():76] Current SDK version is 0.16.4
+2024-03-27 12:29:25,744 INFO    Thread-159 (_run_job):14388 [wandb_setup.py:_flush():76] Configure stats pid to 14388
+2024-03-27 12:29:25,744 INFO    Thread-159 (_run_job):14388 [wandb_setup.py:_flush():76] Loading settings from C:\Users\madsl\.config\wandb\settings
+2024-03-27 12:29:25,744 INFO    Thread-159 (_run_job):14388 [wandb_setup.py:_flush():76] Loading settings from C:\Users\madsl\Dropbox\AAU\EIT 8. sem\Deep Learning\miniproject\825_Deep_learning_miniproject\wandb\settings
+2024-03-27 12:29:25,745 INFO    Thread-159 (_run_job):14388 [wandb_setup.py:_flush():76] Loading settings from environment variables: {'root_dir': 'C:\\Users\\madsl\\Dropbox\\AAU\\EIT 8. sem\\Deep Learning\\miniproject\\825_Deep_learning_miniproject', 'entity': '825-miniproject-DL', 'project': '825-miniproject-DL', 'run_id': 'prs9nzt8', 'sweep_param_path': 'C:\\Users\\madsl\\Dropbox\\AAU\\EIT 8. sem\\Deep Learning\\miniproject\\825_Deep_learning_miniproject\\wandb\\sweep-wkcqgpfu\\config-prs9nzt8.yaml', 'sweep_id': 'wkcqgpfu'}
+2024-03-27 12:29:25,745 INFO    Thread-159 (_run_job):14388 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2024-03-27 12:29:25,745 INFO    Thread-159 (_run_job):14388 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'Neural_network.py', 'program_abspath': 'C:\\Users\\madsl\\Dropbox\\AAU\\EIT 8. sem\\Deep Learning\\miniproject\\825_Deep_learning_miniproject\\Neural_network.py', 'program': 'C:\\Users\\madsl\\Dropbox\\AAU\\EIT 8. sem\\Deep Learning\\miniproject\\825_Deep_learning_miniproject\\Neural_network.py'}
+2024-03-27 12:29:25,746 INFO    Thread-159 (_run_job):14388 [wandb_init.py:_log_setup():526] Logging user logs to C:\Users\madsl\Dropbox\AAU\EIT 8. sem\Deep Learning\miniproject\825_Deep_learning_miniproject\wandb\run-20240327_122925-prs9nzt8\logs\debug.log
+2024-03-27 12:29:25,746 INFO    Thread-159 (_run_job):14388 [wandb_init.py:_log_setup():527] Logging internal logs to C:\Users\madsl\Dropbox\AAU\EIT 8. sem\Deep Learning\miniproject\825_Deep_learning_miniproject\wandb\run-20240327_122925-prs9nzt8\logs\debug-internal.log
+2024-03-27 12:29:25,746 INFO    Thread-159 (_run_job):14388 [wandb_init.py:init():566] calling init triggers
+2024-03-27 12:29:25,746 INFO    Thread-159 (_run_job):14388 [wandb_init.py:init():573] wandb.init called with sweep_config: {'batch_size': 32, 'dropout_p': 0, 'epochs': 50, 'hidden_layers': 5, 'learning_rate': 0.001625, 'optimizer': 'adam'}
+config: {}
+2024-03-27 12:29:25,746 INFO    Thread-159 (_run_job):14388 [wandb_init.py:init():616] starting backend
+2024-03-27 12:29:25,746 INFO    Thread-159 (_run_job):14388 [wandb_init.py:init():620] setting up manager
+2024-03-27 12:29:25,752 INFO    Thread-159 (_run_job):14388 [backend.py:_multiprocessing_setup():105] multiprocessing start_methods=spawn, using: spawn
+2024-03-27 12:29:25,752 INFO    Thread-159 (_run_job):14388 [wandb_init.py:init():628] backend started and connected
+2024-03-27 12:29:25,763 INFO    Thread-159 (_run_job):14388 [wandb_run.py:_config_callback():1343] config_cb None None {'batch_size': 32, 'dropout_p': 0, 'epochs': 50, 'hidden_layers': 5, 'learning_rate': 0.001625, 'optimizer': 'adam'}
+2024-03-27 12:29:25,764 INFO    Thread-159 (_run_job):14388 [wandb_init.py:init():720] updated telemetry
+2024-03-27 12:29:25,806 INFO    Thread-159 (_run_job):14388 [wandb_init.py:init():753] communicating run to backend with 90.0 second timeout
+2024-03-27 12:29:26,474 INFO    Thread-159 (_run_job):14388 [wandb_run.py:_on_init():2262] communicating current version
+2024-03-27 12:29:26,922 INFO    Thread-159 (_run_job):14388 [wandb_run.py:_on_init():2271] got version response upgrade_message: "wandb version 0.16.5 is available!  To upgrade, please run:\n $ pip install wandb --upgrade"
+
+2024-03-27 12:29:26,923 INFO    Thread-159 (_run_job):14388 [wandb_init.py:init():804] starting run threads in backend
+2024-03-27 12:29:27,212 INFO    Thread-159 (_run_job):14388 [wandb_run.py:_console_start():2241] atexit reg
+2024-03-27 12:29:27,213 INFO    Thread-159 (_run_job):14388 [wandb_run.py:_redirect():2096] redirect: wrap_raw
+2024-03-27 12:29:27,213 INFO    Thread-159 (_run_job):14388 [wandb_run.py:_redirect():2161] Wrapping output streams.
+2024-03-27 12:29:27,213 INFO    Thread-159 (_run_job):14388 [wandb_run.py:_redirect():2186] Redirects installed.
+2024-03-27 12:29:27,214 INFO    Thread-159 (_run_job):14388 [wandb_init.py:init():847] run started, returning control to user process
+2024-03-27 12:30:21,889 INFO    Thread-159 (_run_job):14388 [wandb_run.py:_finish():1970] finishing run 825-miniproject-DL/825-miniproject-DL/prs9nzt8
+2024-03-27 12:30:21,889 INFO    Thread-159 (_run_job):14388 [wandb_run.py:_atexit_cleanup():2210] got exitcode: 0
+2024-03-27 12:30:21,889 INFO    Thread-159 (_run_job):14388 [wandb_run.py:_restore():2193] restore
+2024-03-27 12:30:21,890 INFO    Thread-159 (_run_job):14388 [wandb_run.py:_restore():2199] restore done
+2024-03-27 12:30:26,702 INFO    Thread-159 (_run_job):14388 [wandb_run.py:_footer_history_summary_info():3851] rendering history
+2024-03-27 12:30:26,703 INFO    Thread-159 (_run_job):14388 [wandb_run.py:_footer_history_summary_info():3883] rendering summary
+2024-03-27 12:30:26,707 INFO    Thread-159 (_run_job):14388 [wandb_run.py:_footer_sync_info():3810] logging synced files

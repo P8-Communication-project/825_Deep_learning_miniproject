@@ -1,0 +1,3 @@
+Number of ones in y_train: 1948, size of y_train: torch.Size([3912])
+Number of ones in y_val: 596, size of y_val: torch.Size([1124])
+C:\Users\madsl\Dropbox\AAU\EIT 8. sem\Deep Learning\miniproject\825_Deep_learning_miniproject\Neural_network.py:25: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).

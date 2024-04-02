@@ -1,0 +1,10 @@
+2024-04-01 15:25:44 INFO Running runs: []
+2024-04-01 15:25:44 INFO Agent received command: run
+2024-04-01 15:25:44 INFO Agent starting run with config:
+	batch_size: 28
+	epochs: 52
+	hidden_layers: 4
+	learning_rate: 0.002226600540731494
+	optimizer: adam
+2024-04-01 15:25:44 INFO About to run command: python Neural_network.py --batch_size=28 --epochs=52 --hidden_layers=4 --learning_rate=0.002226600540731494 --optimizer=adam
+2024-04-01 15:25:49 INFO Running runs: ['q0ac4qk7']

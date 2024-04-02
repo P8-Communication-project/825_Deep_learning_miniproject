@@ -1,0 +1,2 @@
+Number of ones in y_train: 1948, size of y_train: torch.Size([3912])
+Number of ones in y_val: 596, size of y_val: torch.Size([1124])

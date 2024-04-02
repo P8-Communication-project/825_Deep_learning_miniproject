@@ -1,0 +1,45 @@
+{
+    "os": "Windows-10-10.0.22631-SP0",
+    "python": "3.11.7",
+    "heartbeatAt": "2024-03-27T12:18:12.745881",
+    "startedAt": "2024-03-27T12:18:11.255747",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "C:\\Users\\madsl\\Dropbox\\AAU\\EIT 8. sem\\Deep Learning\\miniproject\\825_Deep_learning_miniproject\\Neural_network.py",
+    "codePathLocal": "Neural_network.py",
+    "codePath": "Neural_network.py",
+    "git": {
+        "remote": "https://github.com/P8-Communication-project/825_Deep_learning_miniproject",
+        "commit": "8536cf75c0570ba39c055b879baeb6144e860604"
+    },
+    "email": "madsllaursen@gmail.com",
+    "root": "C:/Users/madsl/Dropbox/AAU/EIT 8. sem/Deep Learning/miniproject/825_Deep_learning_miniproject",
+    "host": "Mads-Asus",
+    "username": "madsl",
+    "executable": "C:\\Users\\madsl\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+    "cpu_count": 8,
+    "cpu_count_logical": 16,
+    "cpu_freq": {
+        "current": 1801.0,
+        "min": 0.0,
+        "max": 1801.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 1801.0,
+            "min": 0.0,
+            "max": 1801.0
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 475.4475746154785,
+            "used": 294.5391960144043
+        }
+    },
+    "memory": {
+        "total": 15.383598327636719
+    }
+}
