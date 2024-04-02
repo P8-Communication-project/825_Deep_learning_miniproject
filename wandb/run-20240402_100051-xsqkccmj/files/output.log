@@ -1,0 +1,8 @@
+Number of ones in y_train: 1948, size of y_train: torch.Size([3912])
+Number of ones in y_val: 596, size of y_val: torch.Size([1124])
+c:\Users\nlyho\Downloads\optimiser_dropout_and_Leack.py:32: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  return torch.tensor(self.data[idx], dtype=torch.float).to(device), torch.tensor([self.labels[idx]], dtype=torch.float).to(device)
+(1124,)
+1124
+c:\Users\nlyho\Downloads\optimiser_dropout_and_Leack.py:248: UserWarning: Starting a Matplotlib GUI outside of the main thread will likely fail.
+  plt.figure(figsize = (12,7))

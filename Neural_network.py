@@ -8,7 +8,14 @@ import wandb
 import torch.nn as nn
 import numpy as np
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+import matplotlib.pyplot as plt
+import seaborn as sn
+from sklearn.metrics import confusion_matrix
+Confmatrix = True
+
+#device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+device = "cpu"
 #wandb.init(project='your_project_name', config=Config(your_custom_config_dict))
 
 # Define the dataset class
@@ -25,14 +32,53 @@ class CustomDataset(Dataset):
         return torch.tensor(self.data[idx], dtype=torch.float).to(device), torch.tensor([self.labels[idx]], dtype=torch.float).to(device)
 
 
+# class BinaryClassifier(nn.Module):
+#     def __init__(self, input_size, dropout_p=0):
+#         super(BinaryClassifier, self).__init__()
+#         self.fc1 = nn.Linear(input_size, 1024)
+#         self.fc2 = nn.Linear(1024, 512)
+#         self.fc3 = nn.Linear(512, 256)
+#         self.fc4 = nn.Linear(256, 128)
+#         self.fc5 = nn.Linear(128, 64)
+#         self.fc6 = nn.Linear(64, 1)
+#         self.dropout = nn.Dropout(dropout_p)
+#         self.sigmoid = nn.Sigmoid()
+    
+#     def forward(self, x):
+#         x = self.dropout(torch.relu(self.fc1(x)))
+#         x = self.dropout(torch.relu(self.fc2(x)))
+#         x = self.dropout(torch.relu(self.fc3(x)))
+#         x = self.dropout(torch.relu(self.fc4(x)))
+#         x = self.dropout(torch.relu(self.fc5(x)))
+#         x = self.sigmoid(self.fc6(x))
+#         return x
+
+# class BinaryClassifier(nn.Module):
+#     def __init__(self, input_size, dropout_p=0):
+#         super(BinaryClassifier, self).__init__()
+#         self.fc1 = nn.Linear(input_size, 512)
+#         self.fc2 = nn.Linear(512, 256)
+#         self.fc3 = nn.Linear(256, 128)
+#         self.fc4 = nn.Linear(128, 64)
+#         self.fc5 = nn.Linear(64, 1)
+#         self.dropout = nn.Dropout(dropout_p)
+#         self.sigmoid = nn.Sigmoid()
+    
+#     def forward(self, x):
+#         x = self.dropout(torch.relu(self.fc1(x)))
+#         x = self.dropout(torch.relu(self.fc2(x)))
+#         x = self.dropout(torch.relu(self.fc3(x)))
+#         x = self.dropout(torch.relu(self.fc4(x)))
+#         x = self.sigmoid(self.fc5(x))
+#         return x
+
 class BinaryClassifier(nn.Module):
     def __init__(self, input_size, dropout_p=0):
         super(BinaryClassifier, self).__init__()
         self.fc1 = nn.Linear(input_size, 512)
-        self.fc2 = nn.Linear(512, 256)
-        self.fc3 = nn.Linear(256, 128)
-        self.fc4 = nn.Linear(128, 64)
-        self.fc5 = nn.Linear(64, 1)
+        self.fc2 = nn.Linear(512, 128)
+        self.fc3 = nn.Linear(128, 64)
+        self.fc4 = nn.Linear(64, 1)
         self.dropout = nn.Dropout(dropout_p)
         self.sigmoid = nn.Sigmoid()
     
@@ -40,8 +86,7 @@ class BinaryClassifier(nn.Module):
         x = self.dropout(torch.relu(self.fc1(x)))
         x = self.dropout(torch.relu(self.fc2(x)))
         x = self.dropout(torch.relu(self.fc3(x)))
-        x = self.dropout(torch.relu(self.fc4(x)))
-        x = self.sigmoid(self.fc5(x))
+        x = self.sigmoid(self.fc4(x))
         return x
 
 
@@ -99,6 +144,9 @@ def build_dataset(batch_size):
     
     X_train4, X_temp4, y_train4, y_temp4 = train_test_split(x_pitch_down, y[3*len(x_orig):], test_size=0.3, random_state=42)
     X_val4, X_test4, y_val4, y_test4 = train_test_split(X_temp4, y_temp4, test_size=0.33, random_state=42)
+
+    X_train_UUID1, X_temp_uuid, y_train5, y_temp5 = train_test_split(aug_df["uuid"], y[:len(x_orig)], test_size=0.3, random_state=42)
+    X_val_uuid, X_test5, y_val5, y_test5 = train_test_split(X_temp_uuid, y_temp5, test_size=0.33, random_state=42)
     
     #Concatenate all x_train and y_train
     X_train = torch.tensor([*X_train1,*X_train2,*X_train3,*X_train4])
@@ -107,6 +155,7 @@ def build_dataset(batch_size):
     #Concatenate all x_val and y_val
     X_val = torch.tensor([*X_val1,*X_val2,*X_val3,*X_val4])
     y_val = torch.tensor([*y_val1,*y_val2,*y_val3,*y_val4])
+    X_val_uuid_total = [*X_val_uuid, *X_val_uuid, *X_val_uuid, *X_val_uuid]
     
     #Concatenate all x_test and y_test
     X_test = torch.tensor([*X_test1,*X_test2,*X_test3,*X_test4])
@@ -125,7 +174,7 @@ def build_dataset(batch_size):
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
     val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
 
-    return train_loader, val_loader, len(y_val)
+    return train_loader, val_loader, len(y_val), X_val_uuid_total
 
 def train(config=None):
     # Intialize wandb
@@ -135,7 +184,7 @@ def train(config=None):
 
         #print(config)
 
-        train_loader, val_loader, y_val_len = build_dataset(config.batch_size)
+        train_loader, val_loader, y_val_len, uuids_to_val = build_dataset(config.batch_size)
         
         model = BinaryClassifier(input_size=768, dropout_p=config.dropout_p)
         model.to(device)
@@ -150,59 +199,122 @@ def train(config=None):
             model.train()  # Set the model to training mode
             for inputs, labels in train_loader:
                 optimizer.zero_grad()  # Zero the gradients
+                #print("Input size: ", inputs.size())
                 outputs = model(inputs)  # Forward pass
                 loss = criterion(outputs, labels)  # Compute the loss
                 loss.backward()  # Backward pass
                 optimizer.step()  # Update the weights
                 
                 # Log metrics to wandb
-                wandb.log({'train_loss': loss.item(), 'epoch': epoch})
+            wandb.log({'train_loss': loss.item(), 'epoch': epoch})
 
             # Validation loop
             model.eval()  # Set the model to evaluation mode
             val_loss = 0.0
             correct = 0
             total = 0
-            
+            predicted_list = np.array([])
+            labels_list = np.array([])
+        
             with torch.no_grad():
                 for inputs, labels in val_loader:
                     outputs = model(inputs)
-                    val_loss += criterion(outputs, labels).item()
+                    val_loss += criterion(outputs, labels)
                     predicted = torch.round(outputs)
-                    #print(predicted)
                     total += labels.size(0)
-                
+                    predicted_list = np.append(predicted_list, predicted.cpu().numpy())
+                    labels_list = np.append(labels_list, labels.cpu().numpy())
+
                     for predictions, label in zip(predicted, labels):
                         if predictions == label:
                             correct += 1
                 # Compute validation metrics
                 #print(correct, total)
                 accuracy = correct / total
-                val_loss = val_loss/y_val_len
+                val_loss = val_loss/val_loader.__len__()
                 
                 # Log metrics to wandb
-                wandb.log({'val_loss': val_loss, 'val_accuracy': accuracy, 'epoch': epoch, 'user': 'Nicolai'})
+                wandb.log({'val_loss': val_loss, 'val_accuracy': accuracy, 'epoch': epoch, "user ": "Anders"})
+        if Confmatrix == True:
+            print(predicted_list.shape)
+            cf_matrix = confusion_matrix(labels_list, predicted_list)
+            print(len(labels_list))
+            # Build confusion matrix
+            classes = ('COVID-19', 'Healthy')
+            df_cm = pd.DataFrame(cf_matrix / np.sum(cf_matrix, axis=1)[:, None],
+                                index = [i for i in classes],
+                                columns = [i for i in classes])
+            plt.figure(figsize = (12,7))
+            ax = sn.heatmap(df_cm, annot=True,)
+            ax.collections[0].set_clim(0,1)
+            plt.title('Confusion matrix 4 layers')
+            plt.savefig('119_4_layer+1.png')
+        five_random_task = True
+        if five_random_task == True:
+            false_positives = []
+            false_negatives = []
+            correct = []
+            for idx, pred in enumerate(predicted_list):
 
+                # True positive
+                if pred == 1 and labels_list[idx] == 1:
+                    print(f"True positive: {uuids_to_val[idx]}")
+                    correct.append(uuids_to_val[idx])
+                # False positive
+                if pred == 1 and labels_list[idx] == 0:
+                    print(f"False positive: {uuids_to_val[idx]}")
+                    false_positives.append(uuids_to_val[idx])
+
+                # False negative
+                if pred == 0 and labels_list[idx] == 1:
+                    print(f"False negative: {uuids_to_val[idx]}")
+                    false_negatives.append(uuids_to_val[idx])
+
+            dic = {'False positives': false_positives, 'False negatives': false_negatives, 'Correct': correct}
+            import pickle
+            with open('false_pos_neg.pkl', 'wb') as f:
+                pickle.dump(dic, f)
+
+        with torch.no_grad():
+                for inputs, labels in val_loader:
+                    outputs = model(inputs)
+                    val_loss += criterion(outputs, labels)
+                    predicted = torch.round(outputs)
+                    total += labels.size(0)
+                    predicted_list = np.append(predicted_list, predicted.cpu().numpy())
+                    labels_list = np.append(labels_list, labels.cpu().numpy())
+
+                    for predictions, label in zip(predicted, labels):
+                        if predictions == label:
+                            correct += 1
+                # Compute validation metrics
+                #print(correct, total)
+                accuracy = correct / total
+                val_loss = val_loss/val_loader.__len__()
+                
+                # Log metrics to wandb
+                wandb.log({'val_loss': val_loss, 'val_accuracy': accuracy, 'epoch': epoch, "user ": "Anders"})
+        
 # WandDB stads for logging
 wandb.login()
 # Initialize wandb with your project name and optionally specify other configurations
 
 # Define sweep configuration
 sweep_configuration = {
-    "name": "Sweep 1",
-    "method": "bayes",
+    "name": "4 layers 119 for plot",
+    "method": "grid",
     "metric": {"goal": "minimize", "name": "val_loss"},
     "parameters": {
-        "learning_rate": {'values': list(np.linspace(0.00005,0.01,10))},
-        "batch_size": {"values": [16, 32, 64]},
-        "epochs": {"values": [20, 50, 100, 150]},
-        "hidden_layers":{'value': 5},
-        "dropout_p":{'values': [0, 0.2, 0.5, 0.7]},
+        "learning_rate": {'values':[0.0003875] },#list(np.linspace(0.0005,0.005,5))},
+        "batch_size": {"values": [32]},#[16, 32, 64]},
+        "epochs": {"values": [150]},#[20, 50, 100, 150]},
+        "hidden_layers":{'value': 4},
+        "dropout_p":{'values': [0.5]},#[0, 0.2, 0.5]},
         "optimizer": {"values": ["adam"]},
     },
 }
 
-# sweep_id = wandb.sweep(sweep=sweep_configuration, project='825-miniproject-DL')
-sweep_id = '825-miniproject-DL/825-miniproject-DL/02lmh6rn'
+sweep_id = wandb.sweep(sweep=sweep_configuration, project='825-miniproject-DL')
+#sweep_id = '825-miniproject-DL/825-miniproject-DL/wkcqgpfu'
 #print("sweepid: ", sweep_id)
 wandb.agent(sweep_id, function=train)

@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "c:\Users\nlyho\Downloads\optimiser_dropout_and_Leack.py", line 197, in train
+    train_loader, val_loader, y_val_len = build_dataset(config.batch_size)
+  File "c:\Users\nlyho\Downloads\optimiser_dropout_and_Leack.py", line 139, in build_dataset
+    UUIDs, _ = train_test_split(UUID_tmp, y_tmp1, test_size=0.3, random_state=42)
+  File "C:\Users\nlyho\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\sklearn\utils\_param_validation.py", line 211, in wrapper
+    return func(*args, **kwargs)
+  File "C:\Users\nlyho\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\sklearn\model_selection\_split.py", line 2614, in train_test_split
+    arrays = indexable(*arrays)
+  File "C:\Users\nlyho\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\sklearn\utils\validation.py", line 455, in indexable
+    check_consistent_length(*result)
+  File "C:\Users\nlyho\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\sklearn\utils\validation.py", line 409, in check_consistent_length
+    raise ValueError(
+ValueError: Found input variables with inconsistent numbers of samples: [420, 978]

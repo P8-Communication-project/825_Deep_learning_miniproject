@@ -6,7 +6,9 @@
 ***Undersampled_data_with_transform.csv*** contains the features extracted from the dataset with no further data augmentation. \
 ***Augmented_undersampled_data_with_transform.csv*** contains the features of augmented data. Three data augmentations have been performed on the original dataset: Add gaussian noise, pitch shift up and pitch shift down. Note: pitch was shifted by 7 semitones in either direction.
 
-***Neural_network*** documents the development of a pytorch model to perform binary classification. For model training WandB integration is used to parallelize the process through the use of agents which allows for distributed computing across multiple machines. The script allows for easy configuration of hyperparameters through the WandB config dictionary.
+***Neural_network*** documents the development of a pytorch model to perform binary classification. For model training WandB integration is used to parallelize the process through the use of agents which allows for distributed computing across multiple machines. The script allows for easy configuration of hyperparameters through the WandB config dictionary. The script notes the UUIDs, of sound files which were correctly classified, as well as any false positives/negatives that may occur. These are stored as a dictionary in the file ***false_pos_neg.pkl***.
+
+***Prediction_examples*** is an extension of the data_exploration script, here the spectrogram of random samples of the correctly classified and false positives/negatives are plotted.
 
 ## Running the code
 In order to run the code, the required packages must be installed. Do this by running :
@@ -20,4 +22,4 @@ There may be errors with package versions relating to Pytorch, if this happens j
 
 ***Neural_network.py*** is the main script, it requires a login to WandB, and the data files must be in the same working directory for the code to run.
 
-The output of the neural network should be available on WandB.
+The output of the neural network is available on WandB.

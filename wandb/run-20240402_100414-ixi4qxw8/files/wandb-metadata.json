@@ -1,0 +1,45 @@
+{
+    "os": "Windows-10-10.0.22631-SP0",
+    "python": "3.10.11",
+    "heartbeatAt": "2024-04-02T08:04:15.244344",
+    "startedAt": "2024-04-02T08:04:14.542958",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "c:\\Users\\nlyho\\Downloads\\optimiser_dropout_and_Leack.py",
+    "codePathLocal": "..\\..\\..\\..\\Downloads\\optimiser_dropout_and_Leack.py",
+    "codePath": "..\\..\\..\\..\\Downloads\\optimiser_dropout_and_Leack.py",
+    "git": {
+        "remote": "https://github.com/P8-Communication-project/825_Deep_learning_miniproject",
+        "commit": "0adb3d8395dfdaab3d60442b55aad23cb43ab14a"
+    },
+    "email": "awgaouwehgiub@gmail.com",
+    "root": "C:/Users/nlyho/OneDrive - Aalborg Universitet/8. Semester/Git/825_Deep_learning_miniproject",
+    "host": "Nicolai-Laptop",
+    "username": "nlyho",
+    "executable": "C:\\Users\\nlyho\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\\python.exe",
+    "cpu_count": 8,
+    "cpu_count_logical": 16,
+    "cpu_freq": {
+        "current": 2555.0,
+        "min": 0.0,
+        "max": 3201.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 2555.0,
+            "min": 0.0,
+            "max": 3201.0
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 474.71581649780273,
+            "used": 321.49462890625
+        }
+    },
+    "memory": {
+        "total": 13.855525970458984
+    }
+}
